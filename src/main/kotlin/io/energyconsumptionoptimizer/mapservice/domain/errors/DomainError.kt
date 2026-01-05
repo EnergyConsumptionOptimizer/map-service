@@ -7,6 +7,8 @@ abstract class DomainException(
 
 class FlorPlanFormatNotValidException : DomainException("The provided SVG is not valid")
 
+class FlorPlanFormatNotFoundException : DomainException("Floor plan does not exist")
+
 class ZoneIDNotFoundException(
     id: String,
 ) : DomainException("Zone ID $id not found")

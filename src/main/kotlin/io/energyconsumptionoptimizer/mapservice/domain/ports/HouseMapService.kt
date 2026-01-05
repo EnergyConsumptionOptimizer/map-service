@@ -12,6 +12,8 @@ interface HouseMapService {
      * This method aggregates all spatial data into a single cohesive representation of the house.
      *
      * @return The complete house map with all its components
+     *
+     * @throws io.energyconsumptionoptimizer.mapservice.domain.errors.FlorPlanFormatNotFoundException
      */
     suspend fun getHouseMap(): HouseMap
 }
