@@ -162,10 +162,11 @@ class ZoneServiceImplTest :
             should("update zone name") {
                 val zone = craftZone()
                 val newName = "New name"
-                val updatedZone = zone.copy(name = ZoneName(newName))
 
                 coEvery { repository.findZoneByID(zone.id) } returns zone
-                coEvery { repository.updateZone(any()) } returns updatedZone
+                coEvery { repository.updateZone(any()) } coAnswers {
+                    firstArg()
+                }
 
                 val result = zoneService.updateZone(zone.id, name = newName)
 
@@ -176,10 +177,11 @@ class ZoneServiceImplTest :
             should("update zone color") {
                 val zone = craftZone()
                 val newColor = "#00FF00"
-                val updatedZone = zone.copy(color = Color(newColor))
 
                 coEvery { repository.findZoneByID(zone.id) } returns zone
-                coEvery { repository.updateZone(any()) } returns updatedZone
+                coEvery { repository.updateZone(any()) } coAnswers {
+                    firstArg()
+                }
 
                 val result = zoneService.updateZone(zone.id, colorHex = newColor)
 
@@ -191,7 +193,6 @@ class ZoneServiceImplTest :
                 val zone = craftZone()
 
                 val newVertices = listOf(0.0 to 0.0, 20.0 to 0.0, 20.0 to 20.0, 0.0 to 20.0)
-                val updatedZone = zone.copy(vertices = newVertices.map { Point(it.first, it.second) })
 
                 val hookup =
                     SmartFurnitureHookup(
@@ -201,7 +202,9 @@ class ZoneServiceImplTest :
                     )
 
                 coEvery { repository.findZoneByID(zone.id) } returns zone
-                coEvery { repository.updateZone(any()) } returns updatedZone
+                coEvery { repository.updateZone(any()) } coAnswers {
+                    firstArg()
+                }
                 coEvery { repository.findAllSmartFurnitureHookups() } returns listOf(hookup)
                 coEvery { repository.updateSmartFurnitureHookup(any()) } returns hookup
 
