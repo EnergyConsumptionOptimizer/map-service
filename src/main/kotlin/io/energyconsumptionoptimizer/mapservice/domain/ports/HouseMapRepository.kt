@@ -12,6 +12,7 @@ import io.energyconsumptionoptimizer.mapservice.domain.ZoneID
  *
  *
  */
+@Suppress("Detekt.TooManyFunctions")
 interface HouseMapRepository {
     /**
      * Adds a new floor plan to the repository.
