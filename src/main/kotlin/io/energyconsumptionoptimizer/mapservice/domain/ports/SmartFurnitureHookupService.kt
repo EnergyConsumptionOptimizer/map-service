@@ -58,8 +58,8 @@ interface SmartFurnitureHookupService {
      */
     suspend fun updateSmartFurnitureHookup(
         id: SmartFurnitureHookupID,
-        position: Pair<Double, Double>?,
-        zoneID: ZoneID?,
+        position: Pair<Double, Double>? = null,
+        zoneID: ZoneID? = null,
     ): SmartFurnitureHookup
 
     /**
