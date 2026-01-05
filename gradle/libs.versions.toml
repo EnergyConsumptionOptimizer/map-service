@@ -7,11 +7,13 @@ coroutines = "1.10.2"
 logback = "1.5.23"
 kmongo = "5.5.1"
 dotenvKotlin= "6.5.1"
-
+mockkVersion = "1.14.7"
 
 [libraries]
 kotest-junit5-jvm = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
 kotest-assertions-core-jvm = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "kotest" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockkVersion" }
+
 
 ktor-server-core-jvm = { group = "io.ktor", name = "ktor-server-core-jvm", version.ref = "ktor" }
 ktor-server-netty-jvm = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
@@ -33,7 +35,8 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 dotenv-kotlin = { group = "io.github.cdimascio", name = "dotenv-kotlin", version.ref = "dotenvKotlin" }
 [bundles]
-kotlin-testing = [ "kotest-junit5-jvm", "kotest-assertions-core-jvm" ]
+kotlin-testing = [ "kotest-junit5-jvm", "kotest-assertions-core-jvm", "mockk" ]
+
 ktor = [
     "ktor-server-core-jvm",
     "ktor-server-netty-jvm",
