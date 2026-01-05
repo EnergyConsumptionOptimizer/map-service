@@ -5,6 +5,8 @@ abstract class DomainException(
     cause: Throwable? = null,
 ) : RuntimeException(message, cause)
 
+class FlorPlanFormatNotValidException : DomainException("The provided SVG is not valid")
+
 class ZoneIDNotFoundException(
     id: String,
 ) : DomainException("Zone ID $id not found")

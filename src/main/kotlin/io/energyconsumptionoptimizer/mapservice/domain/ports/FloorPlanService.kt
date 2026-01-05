@@ -12,6 +12,8 @@ interface FloorPlanService {
      *
      * @param floorPlanSVG The SVG string representing the house floor plan layout
      * @return The created floor plan entity
+     *
+     * @throws io.energyconsumptionoptimizer.mapservice.domain.errors.FlorPlanFormatNotValidException
      */
     suspend fun createFloorPlan(floorPlanSVG: String): FloorPlan
 
