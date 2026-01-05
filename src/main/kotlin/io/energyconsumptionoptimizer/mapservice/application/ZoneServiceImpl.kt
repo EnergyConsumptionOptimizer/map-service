@@ -7,6 +7,7 @@ import io.energyconsumptionoptimizer.mapservice.domain.Zone
 import io.energyconsumptionoptimizer.mapservice.domain.ZoneFactory
 import io.energyconsumptionoptimizer.mapservice.domain.ZoneID
 import io.energyconsumptionoptimizer.mapservice.domain.ZoneName
+import io.energyconsumptionoptimizer.mapservice.domain.errors.ZoneIDNotFoundException
 import io.energyconsumptionoptimizer.mapservice.domain.ports.HouseMapRepository
 import io.energyconsumptionoptimizer.mapservice.domain.ports.ZoneService
 import io.energyconsumptionoptimizer.mapservice.domain.utils.isPointInPolygon
@@ -38,7 +39,7 @@ class ZoneServiceImpl(
         colorHex: String?,
         vertices: List<Pair<Double, Double>>?,
     ): Zone {
-        val zone = repository.findZoneByID(id) ?: throw Error("ID $id not found")
+        val zone = repository.findZoneByID(id) ?: throw ZoneIDNotFoundException(id.value)
 
         name?.let { zone.name = ZoneName(name) }
         colorHex?.let { zone.color = Color(it) }
