@@ -7,6 +7,7 @@ import io.energyconsumptionoptimizer.mapservice.domain.SmartFurnitureHookupID
 import io.energyconsumptionoptimizer.mapservice.domain.Zone
 import io.energyconsumptionoptimizer.mapservice.domain.ZoneID
 import io.energyconsumptionoptimizer.mapservice.domain.ZoneName
+import io.energyconsumptionoptimizer.mapservice.domain.errors.ZoneIDNotFoundException
 import io.energyconsumptionoptimizer.mapservice.domain.ports.HouseMapRepository
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.ShouldSpec
@@ -219,7 +220,7 @@ class ZoneServiceImplTest :
                 val zoneId = ZoneID("non-existent")
                 coEvery { repository.findZoneByID(zoneId) } returns null
 
-                shouldThrow<Error> {
+                shouldThrow<ZoneIDNotFoundException> {
                     zoneService.updateZone(zoneId, name = "New Name")
                 }
             }
