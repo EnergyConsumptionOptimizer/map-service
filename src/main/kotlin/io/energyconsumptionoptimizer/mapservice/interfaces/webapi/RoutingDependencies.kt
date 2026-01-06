@@ -1,6 +1,7 @@
 package io.energyconsumptionoptimizer.mapservice.interfaces.webapi
 
 import io.energyconsumptionoptimizer.mapservice.application.FloorPlanServiceImpl
+import io.energyconsumptionoptimizer.mapservice.application.ZoneServiceImpl
 import io.energyconsumptionoptimizer.mapservice.domain.ports.HouseMapRepository
 import io.energyconsumptionoptimizer.mapservice.interfaces.webapi.middleware.AuthMiddleware
 import io.energyconsumptionoptimizer.mapservice.storage.mongodb.MongoHouseMapRepository
@@ -19,6 +20,7 @@ class RoutingDependencies(
         )
     }
     val floorPlanServiceImpl by lazy { FloorPlanServiceImpl(mongoFloorPlanRepository) }
+    val zoneServiceImpl by lazy { ZoneServiceImpl(mongoFloorPlanRepository) }
 
     val authMiddleware by lazy { AuthMiddleware(httpClient) }
 }
