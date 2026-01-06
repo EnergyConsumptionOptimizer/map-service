@@ -13,7 +13,7 @@ interface HouseMapService {
      *
      * @return The complete house map with all its components
      *
-     * @throws io.energyconsumptionoptimizer.mapservice.domain.errors.FlorPlanFormatNotFoundException
+     * @throws io.energyconsumptionoptimizer.mapservice.domain.errors.FlorPlanNotFoundException
      */
     suspend fun getHouseMap(): HouseMap
 }

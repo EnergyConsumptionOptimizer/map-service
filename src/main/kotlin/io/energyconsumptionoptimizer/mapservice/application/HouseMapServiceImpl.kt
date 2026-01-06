@@ -1,7 +1,7 @@
 package io.energyconsumptionoptimizer.mapservice.application
 
 import io.energyconsumptionoptimizer.mapservice.domain.HouseMap
-import io.energyconsumptionoptimizer.mapservice.domain.errors.FlorPlanFormatNotFoundException
+import io.energyconsumptionoptimizer.mapservice.domain.errors.FlorPlanNotFoundException
 import io.energyconsumptionoptimizer.mapservice.domain.ports.FloorPlanService
 import io.energyconsumptionoptimizer.mapservice.domain.ports.HouseMapService
 import io.energyconsumptionoptimizer.mapservice.domain.ports.SmartFurnitureHookupService
@@ -13,10 +13,10 @@ class HouseMapServiceImpl(
     private val smartFurnitureHookupService: SmartFurnitureHookupService,
 ) : HouseMapService {
     override suspend fun getHouseMap(): HouseMap {
-        val florPlan = floorPlanService.getFloorPlan() ?: throw FlorPlanFormatNotFoundException()
+        val floorPlan = floorPlanService.getFloorPlan() ?: throw FlorPlanNotFoundException()
         val zones = zoneService.getZones()
         val smartFurnitureHookups = smartFurnitureHookupService.getSmartFurnitureHookups()
 
-        return HouseMap(florPlan, zones, smartFurnitureHookups)
+        return HouseMap(floorPlan, zones, smartFurnitureHookups)
     }
 }

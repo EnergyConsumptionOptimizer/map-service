@@ -3,7 +3,7 @@ package io.energyconsumptionoptimizer.mapservice.application
 import io.energyconsumptionoptimizer.mapservice.domain.FloorPlan
 import io.energyconsumptionoptimizer.mapservice.domain.SmartFurnitureHookupID
 import io.energyconsumptionoptimizer.mapservice.domain.ZoneID
-import io.energyconsumptionoptimizer.mapservice.domain.errors.FlorPlanFormatNotFoundException
+import io.energyconsumptionoptimizer.mapservice.domain.errors.FlorPlanNotFoundException
 import io.energyconsumptionoptimizer.mapservice.domain.ports.FloorPlanService
 import io.energyconsumptionoptimizer.mapservice.domain.ports.SmartFurnitureHookupService
 import io.energyconsumptionoptimizer.mapservice.domain.ports.ZoneService
@@ -75,7 +75,7 @@ class HouseMapServiceImplTest :
             should("throw error when floor plan does not exist") {
                 coEvery { floorPlanService.getFloorPlan() } returns null
 
-                shouldThrow<FlorPlanFormatNotFoundException> {
+                shouldThrow<FlorPlanNotFoundException> {
                     houseMapService.getHouseMap()
                 }
 
