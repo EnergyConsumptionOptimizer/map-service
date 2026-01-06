@@ -6,21 +6,12 @@ import io.energyconsumptionoptimizer.mapservice.application.SmartFurnitureHookup
 import io.energyconsumptionoptimizer.mapservice.application.ZoneServiceImpl
 import io.energyconsumptionoptimizer.mapservice.domain.ports.HouseMapRepository
 import io.energyconsumptionoptimizer.mapservice.interfaces.webapi.middleware.AuthMiddleware
-import io.energyconsumptionoptimizer.mapservice.storage.mongodb.MongoHouseMapRepository
 import io.ktor.client.HttpClient
-import org.litote.kmongo.coroutine.CoroutineClient
 
 class RoutingDependencies(
-    mongoClient: CoroutineClient,
-    databaseName: String,
+    mongoFloorPlanRepository: HouseMapRepository,
     httpClient: HttpClient,
 ) {
-    val mongoFloorPlanRepository: HouseMapRepository by lazy {
-        MongoHouseMapRepository(
-            mongoClient,
-            databaseName,
-        )
-    }
     val floorPlanServiceImpl by lazy { FloorPlanServiceImpl(mongoFloorPlanRepository) }
     val zoneServiceImpl by lazy { ZoneServiceImpl(mongoFloorPlanRepository) }
     val smartFurnitureHookupServiceImpl by lazy { SmartFurnitureHookupServiceImpl(mongoFloorPlanRepository) }
