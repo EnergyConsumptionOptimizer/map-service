@@ -27,6 +27,7 @@ import org.litote.kmongo.coroutine.CoroutineCollection
 import org.litote.kmongo.eq
 import java.util.UUID
 
+@Suppress("Detekt.TooManyFunctions")
 class MongoHouseMapRepository(
     mongoClient: CoroutineClient,
     databaseName: String = "map-service",
