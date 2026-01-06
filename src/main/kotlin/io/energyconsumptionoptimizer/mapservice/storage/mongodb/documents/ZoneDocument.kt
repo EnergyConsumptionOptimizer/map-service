@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ZoneDocument(
+    @Suppress("ConstructorParameterNaming")
     val _id: String,
     val name: String,
     val color: String,
