@@ -73,15 +73,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v6
+      - name: Set up JDK
+        uses: actions/setup-java@v4
         with:
-          node-version-file: package.json
-          cache: npm
-          cache-dependency-path: package-lock.json
+          java-version: '21'
+          distribution: 'temurin'
+          cache: gradle
 
-      - run: npm ci
-
-      - run: npx typedoc --entryPointStrategy expand ./src --plugin typedoc-github-theme
+      - name: Generate Documentation
+        run: ./gradlew dokkaGenerateHtml
 
       - name: Deploy to GitHub Pages
         uses: crazy-max/ghaction-github-pages@v4
