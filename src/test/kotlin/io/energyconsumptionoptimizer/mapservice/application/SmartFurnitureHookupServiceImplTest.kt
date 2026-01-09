@@ -3,6 +3,7 @@ package io.energyconsumptionoptimizer.mapservice.application
 import io.energyconsumptionoptimizer.mapservice.domain.Point
 import io.energyconsumptionoptimizer.mapservice.domain.SmartFurnitureHookup
 import io.energyconsumptionoptimizer.mapservice.domain.SmartFurnitureHookupID
+import io.energyconsumptionoptimizer.mapservice.domain.Zone
 import io.energyconsumptionoptimizer.mapservice.domain.ZoneID
 import io.energyconsumptionoptimizer.mapservice.domain.errors.SmartFurnitureHookupIDNotFoundException
 import io.energyconsumptionoptimizer.mapservice.domain.errors.ZoneIDNotFoundException
@@ -169,6 +170,24 @@ class SmartFurnitureHookupServiceImplTest :
             }
 
             context("updateSmartFurnitureHookup") {
+                suspend fun assertHookupMovedToNewPosition(
+                    hookup: SmartFurnitureHookup,
+                    zone: Zone,
+                    newPosition: Pair<Double, Double>,
+                ): SmartFurnitureHookup {
+                    coEvery { repository.findSmartFurnitureHookupByID(hookup.id) } returns hookup
+                    coEvery { repository.findAllZones() } returns listOf(zone)
+                    coEvery { repository.updateSmartFurnitureHookup(any()) } coAnswers { firstArg() }
+
+                    val result =
+                        hookupService.updateSmartFurnitureHookup(hookup.id, newPosition, null)
+
+                    result.position.x shouldBe newPosition.first
+                    result.position.y shouldBe newPosition.second
+
+                    return result
+                }
+
                 should("throw exception when hookup does not exist") {
                     val id = SmartFurnitureHookupID("non-existent")
 
@@ -199,16 +218,7 @@ class SmartFurnitureHookupServiceImplTest :
                                 ),
                         )
 
-                    coEvery { repository.findSmartFurnitureHookupByID(hookup.id) } returns hookup
-                    coEvery { repository.findAllZones() } returns listOf(zone)
-                    coEvery { repository.updateSmartFurnitureHookup(any()) } coAnswers {
-                        firstArg()
-                    }
-
-                    val result = hookupService.updateSmartFurnitureHookup(hookup.id, newPosition, null)
-
-                    result.position.x shouldBe newPosition.first
-                    result.position.y shouldBe newPosition.second
+                    val result = assertHookupMovedToNewPosition(hookup, zone, newPosition)
                     result.zoneID shouldBe zone.id
 
                     coVerify(exactly = 1) { repository.findAllZones() }
@@ -231,16 +241,7 @@ class SmartFurnitureHookupServiceImplTest :
                                 ),
                         )
 
-                    coEvery { repository.findSmartFurnitureHookupByID(hookup.id) } returns hookup
-                    coEvery { repository.findAllZones() } returns listOf(zone)
-                    coEvery { repository.updateSmartFurnitureHookup(any()) } coAnswers {
-                        firstArg()
-                    }
-
-                    val result = hookupService.updateSmartFurnitureHookup(hookup.id, newPosition, null)
-
-                    result.position.x shouldBe newPosition.first
-                    result.position.y shouldBe newPosition.second
+                    val result = assertHookupMovedToNewPosition(hookup, zone, newPosition)
                     result.zoneID shouldBe null
 
                     coVerify(exactly = 1) { repository.findAllZones() }
