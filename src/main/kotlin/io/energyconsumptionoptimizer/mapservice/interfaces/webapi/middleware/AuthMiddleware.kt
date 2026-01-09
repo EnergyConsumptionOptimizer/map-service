@@ -23,6 +23,7 @@ class AuthMiddleware(
         return token
     }
 
+    @Suppress("RedundantSuspendModifier")
     private suspend fun verifyToken(
         endpoint: String,
         call: ApplicationCall,

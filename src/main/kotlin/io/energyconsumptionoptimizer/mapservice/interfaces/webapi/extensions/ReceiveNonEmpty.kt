@@ -20,6 +20,7 @@ import io.ktor.server.request.receive
  * @throws EmptyUpdateRequestException if the request body is considered empty
  *         according to the [isEmpty] predicate.
  */
+@Suppress("RedundantSuspendModifier")
 suspend inline fun <reified T : Any> ApplicationCall.receiveNonEmpty(isEmpty: (T) -> Boolean): T {
     val request = receive<T>()
     if (isEmpty(request)) {
