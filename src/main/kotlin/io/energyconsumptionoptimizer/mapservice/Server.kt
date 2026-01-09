@@ -7,7 +7,7 @@ import io.ktor.server.netty.NettyApplicationEngine
 import kotlin.system.exitProcess
 import kotlin.text.toIntOrNull
 
-private const val DEFAULT_PORT = 3001
+private val PORT = System.getenv("PORT")?.toIntOrNull() ?: 3000
 private const val SHUTDOWN_GRACE_PERIOD_MS = 1000L
 private const val SHUTDOWN_TIMEOUT_MS = 2000L
 
@@ -43,7 +43,7 @@ private fun initializeDatabase(dependencies: Dependencies) {
 }
 
 private fun createServer(dependencies: Dependencies) =
-    embeddedServer(Netty, port = System.getenv("PORT")?.toIntOrNull() ?: DEFAULT_PORT) {
+    embeddedServer(Netty, PORT) {
         module(dependencies)
     }
 
