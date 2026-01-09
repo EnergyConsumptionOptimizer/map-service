@@ -19,13 +19,15 @@ fun Route.floorPlanRoutes(
     route("api/floor-plan") {
         withAdminAuth(authMiddleware) {
             post {
-                val svgContent =
-                    call.parameters["svgContent"]
-                        ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing svg content")
+                val svgContent = call.parameters["svgContent"]
+                if (svgContent == null) {
+                    call.respond(HttpStatusCode.BadRequest, "Missing svg content")
+                    return@post
+                }
 
                 val floorPlan = floorPlanService.createFloorPlan(svgContent)
 
-                return@post call.respond(HttpStatusCode.Created, FloorPlanMapper.toDTO(floorPlan))
+                call.respond(HttpStatusCode.Created, FloorPlanMapper.toDTO(floorPlan))
             }
         }
         withAuth(authMiddleware) {
