@@ -30,10 +30,10 @@ private fun loadConfiguration(): AppConfig {
     val mongoHost = System.getenv("MONGODB_HOST") ?: "localhost"
     val mongoPort = System.getenv("MONGODB_PORT") ?: "27017"
     val mongoDbName = System.getenv("MONGO_DB") ?: "mapservice"
-    val forecastingDb = "mongodb://$mongoHost:$mongoPort"
+    val mongoUri = "mongodb://$mongoHost:$mongoPort"
 
     return AppConfig(
-        mongoUri = forecastingDb,
+        mongoUri = mongoUri,
         mongoDatabase = mongoDbName,
     )
 }
