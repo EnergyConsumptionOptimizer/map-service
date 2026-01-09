@@ -15,7 +15,7 @@ repositories {
 }
 
 application {
-    mainClass.set("TestKt")
+    mainClass.set("io.energyconsumptionoptimizer.mapservice.ServerKt")
 }
 
 buildscript {
