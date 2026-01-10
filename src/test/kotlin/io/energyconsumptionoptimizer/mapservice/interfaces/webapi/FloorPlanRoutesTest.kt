@@ -6,13 +6,17 @@ import io.energyconsumptionoptimizer.mapservice.domain.errors.FlorPlanFormatNotV
 import io.energyconsumptionoptimizer.mapservice.interfaces.webapi.errors.InvalidTokenException
 import io.energyconsumptionoptimizer.mapservice.interfaces.webapi.errors.UnauthorizedException
 import io.energyconsumptionoptimizer.mapservice.interfaces.webapi.middleware.AuthMiddleware
+import io.energyconsumptionoptimizer.mapservice.presentation.requests.UploadSvgRequest
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import io.ktor.client.request.get
 import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
+import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.contentType
 import io.ktor.server.testing.testApplication
 import io.mockk.Runs
 import io.mockk.clearAllMocks
@@ -48,6 +52,11 @@ class FloorPlanRoutesTest :
             context("POST /api/floor-plan") {
                 should("create floor plan with valid SVG content") {
                     val svgContent = "<svg><rect width='100' height='100'/></svg>"
+
+                    val uploadRequest =
+                        UploadSvgRequest(
+                            svgContent = svgContent,
+                        )
                     val floorPlan = FloorPlan(svgContent)
 
                     coEvery { authMiddleware.authenticateAdmin(any()) } just Runs
@@ -58,7 +67,13 @@ class FloorPlanRoutesTest :
                             configureApp(routingDependencies)
                         }
 
-                        val response = client.post("/api/floor-plan?svgContent=$svgContent")
+                        val client = createJsonClient()
+
+                        val response =
+                            client.post("/api/floor-plan") {
+                                contentType(ContentType.Application.Json)
+                                setBody(uploadRequest)
+                            }
 
                         response.status shouldBe HttpStatusCode.Created
 
@@ -80,8 +95,16 @@ class FloorPlanRoutesTest :
                         application {
                             configureApp(routingDependencies)
                         }
-
-                        val response = client.post("/api/floor-plan?svgContent=invalid_content")
+                        val client = createJsonClient()
+                        val response =
+                            client.post("/api/floor-plan?svgContent=invalid_content") {
+                                contentType(ContentType.Application.Json)
+                                setBody(
+                                    UploadSvgRequest(
+                                        svgContent = "invalid request",
+                                    ),
+                                )
+                            }
 
                         response.status shouldBe HttpStatusCode.BadRequest
                     }
@@ -94,8 +117,12 @@ class FloorPlanRoutesTest :
                         application {
                             configureApp(routingDependencies)
                         }
-
-                        val response = client.post("/api/floor-plan")
+                        val client = createJsonClient()
+                        val response =
+                            client.post("/api/floor-plan") {
+                                contentType(ContentType.Application.Json)
+                                setBody("""{}""")
+                            }
 
                         response.status shouldBe HttpStatusCode.BadRequest
                     }
@@ -110,7 +137,7 @@ class FloorPlanRoutesTest :
                             configureApp(routingDependencies)
                         }
 
-                        val response = client.post("/api/floor-plan?svgContent=<svg></svg>")
+                        val response = client.post("/api/floor-plan")
 
                         response.status shouldBe HttpStatusCode.Unauthorized
                         coVerify(exactly = 0) { floorPlanService.createFloorPlan(any()) }
@@ -126,7 +153,7 @@ class FloorPlanRoutesTest :
                             configureApp(routingDependencies)
                         }
 
-                        val response = client.post("/api/floor-plan?svgContent=<svg></svg>")
+                        val response = client.post("/api/floor-plan")
 
                         response.status shouldBe HttpStatusCode.Forbidden
 

@@ -10,5 +10,4 @@ fun ApplicationTestBuilder.createJsonClient(): HttpClient =
         install(ContentNegotiation) {
             json()
         }
-        // You can add other reusable config here (e.g., default headers)
     }
