@@ -5,7 +5,9 @@ import io.energyconsumptionoptimizer.mapservice.interfaces.webapi.middleware.Aut
 import io.energyconsumptionoptimizer.mapservice.interfaces.webapi.middleware.withAdminAuth
 import io.energyconsumptionoptimizer.mapservice.interfaces.webapi.middleware.withAuth
 import io.energyconsumptionoptimizer.mapservice.presentation.mappers.FloorPlanMapper
+import io.energyconsumptionoptimizer.mapservice.presentation.requests.UploadSvgRequest
 import io.ktor.http.HttpStatusCode
+import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
@@ -19,11 +21,8 @@ fun Route.floorPlanRoutes(
     route("api/floor-plan") {
         withAdminAuth(authMiddleware) {
             post {
-                val svgContent = call.parameters["svgContent"]
-                if (svgContent == null) {
-                    call.respond(HttpStatusCode.BadRequest, "Missing svg content")
-                    return@post
-                }
+                val request = call.receive<UploadSvgRequest>()
+                val svgContent = request.svgContent
 
                 val floorPlan = floorPlanService.createFloorPlan(svgContent)
 
