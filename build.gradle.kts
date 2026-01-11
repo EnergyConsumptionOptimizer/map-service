@@ -41,7 +41,7 @@ gitSemVer {
 
 dokka {
     dokkaPublications.html {
-        outputDirectory.set(layout.buildDirectory.dir("$rootDir/doc"))
+        outputDirectory.set(layout.buildDirectory.dir("$rootDir/docs"))
     }
 }
 
