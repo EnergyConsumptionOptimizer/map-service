@@ -3,6 +3,7 @@ package io.energyconsumptionoptimizer.mapservice.interfaces.webapi
 import io.energyconsumptionoptimizer.mapservice.interfaces.webapi.routes.floorPlanRoutes
 import io.energyconsumptionoptimizer.mapservice.interfaces.webapi.routes.healthCheck
 import io.energyconsumptionoptimizer.mapservice.interfaces.webapi.routes.houseMapRoutes
+import io.energyconsumptionoptimizer.mapservice.interfaces.webapi.routes.internal.internalSmartFurnitureHookupRoutes
 import io.energyconsumptionoptimizer.mapservice.interfaces.webapi.routes.smartFurnitureHookupRoutes
 import io.energyconsumptionoptimizer.mapservice.interfaces.webapi.routes.zoneRoutes
 import io.ktor.server.application.Application
@@ -21,6 +22,9 @@ fun Application.configureRouting(dependencies: RoutingDependencies) {
         smartFurnitureHookupRoutes(
             dependencies.smartFurnitureHookupServiceImpl,
             dependencies.authMiddleware,
+        )
+        internalSmartFurnitureHookupRoutes(
+            dependencies.smartFurnitureHookupServiceImpl,
         )
     }
 }
