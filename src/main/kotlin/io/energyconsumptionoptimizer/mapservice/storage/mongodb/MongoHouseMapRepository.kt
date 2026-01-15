@@ -1,6 +1,7 @@
 package io.energyconsumptionoptimizer.mapservice.storage.mongodb
 
 import com.mongodb.ErrorCategory
+import com.mongodb.MongoCommandException
 import com.mongodb.MongoWriteException
 import com.mongodb.client.model.FindOneAndReplaceOptions
 import com.mongodb.client.model.ReplaceOptions
@@ -101,14 +102,20 @@ class MongoHouseMapRepository(
     override suspend fun updateZone(zone: Zone): Zone {
         val document = ZoneMapper.toDocument(zone)
 
-        val updatedDocument =
-            zoneCollection.findOneAndReplace(
-                ZoneDocument::_id eq zone.id.value,
-                document,
-                FindOneAndReplaceOptions().returnDocument(ReturnDocument.AFTER),
-            ) ?: throw ZoneIDNotFoundException(zone.id.value)
-
-        return ZoneMapper.toDomain(updatedDocument)
+        try {
+            val updatedDocument =
+                zoneCollection.findOneAndReplace(
+                    ZoneDocument::_id eq zone.id.value,
+                    document,
+                    FindOneAndReplaceOptions().returnDocument(ReturnDocument.AFTER),
+                ) ?: throw ZoneIDNotFoundException(zone.id.value)
+            return ZoneMapper.toDomain(updatedDocument)
+        } catch (e: MongoCommandException) {
+            if (e.errorCode == 11000) {
+                throw ZoneNameAlreadyExistsException(document.name)
+            }
+            throw e
+        }
     }
 
     override suspend fun updateSmartFurnitureHookup(smartFurnitureHookup: SmartFurnitureHookup): SmartFurnitureHookup {

@@ -49,6 +49,7 @@ interface HouseMapRepository {
      * @return The updated zone
      *
      * @throws io.energyconsumptionoptimizer.mapservice.domain.errors.ZoneIDNotFoundException
+     * @throws io.energyconsumptionoptimizer.mapservice.domain.errors.ZoneNameAlreadyExistsException
      */
     suspend fun updateZone(zone: Zone): Zone
 
