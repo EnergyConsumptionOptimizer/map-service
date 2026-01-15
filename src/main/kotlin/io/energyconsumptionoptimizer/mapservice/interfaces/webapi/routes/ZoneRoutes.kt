@@ -7,6 +7,7 @@ import io.energyconsumptionoptimizer.mapservice.interfaces.webapi.extensions.req
 import io.energyconsumptionoptimizer.mapservice.interfaces.webapi.middleware.AuthMiddleware
 import io.energyconsumptionoptimizer.mapservice.interfaces.webapi.middleware.withAdminAuth
 import io.energyconsumptionoptimizer.mapservice.interfaces.webapi.middleware.withAuth
+import io.energyconsumptionoptimizer.mapservice.presentation.dto.ZonesDTO
 import io.energyconsumptionoptimizer.mapservice.presentation.mappers.ZoneMapper
 import io.energyconsumptionoptimizer.mapservice.presentation.requests.CreateZoneRequest
 import io.energyconsumptionoptimizer.mapservice.presentation.requests.UpdateZoneRequest
@@ -30,7 +31,7 @@ fun Route.zoneRoutes(
             get {
                 val zones = zoneService.getZones()
 
-                return@get call.respond(HttpStatusCode.OK, zones.map { ZoneMapper.toDTO(it) })
+                return@get call.respond(HttpStatusCode.OK, ZonesDTO(zones.map { ZoneMapper.toDTO(it) }))
             }
             route("{id}") {
                 get {
