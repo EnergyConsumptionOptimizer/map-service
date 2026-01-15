@@ -9,6 +9,7 @@ import io.energyconsumptionoptimizer.mapservice.interfaces.webapi.extensions.req
 import io.energyconsumptionoptimizer.mapservice.interfaces.webapi.middleware.AuthMiddleware
 import io.energyconsumptionoptimizer.mapservice.interfaces.webapi.middleware.withAdminAuth
 import io.energyconsumptionoptimizer.mapservice.interfaces.webapi.middleware.withAuth
+import io.energyconsumptionoptimizer.mapservice.presentation.dto.SmartFurnitureHookupsDTO
 import io.energyconsumptionoptimizer.mapservice.presentation.mappers.SmartFurnitureHookupMapper
 import io.energyconsumptionoptimizer.mapservice.presentation.requests.CreateSmartFurnitureHookupRequest
 import io.energyconsumptionoptimizer.mapservice.presentation.requests.UpdateSmartFurnitureHookupRequest
@@ -73,7 +74,7 @@ fun Route.smartFurnitureHookupRoutes(
 
                 return@get call.respond(
                     HttpStatusCode.OK,
-                    smartFurnitureHookups.map { SmartFurnitureHookupMapper.toDTO(it) },
+                    SmartFurnitureHookupsDTO(smartFurnitureHookups.map { SmartFurnitureHookupMapper.toDTO(it) }),
                 )
             }
             route("{id}") {
