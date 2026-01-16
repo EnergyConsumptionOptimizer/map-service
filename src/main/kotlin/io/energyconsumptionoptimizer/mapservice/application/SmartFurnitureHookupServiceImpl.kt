@@ -25,6 +25,8 @@ class SmartFurnitureHookupServiceImpl(
 
         if (zoneID != null) {
             getZoneOrFail(zoneID)
+        } else {
+            smartFurnitureHookup.zoneID = findZoneIDOfSmartFurnitureHookup(smartFurnitureHookup.position)
         }
 
         return repository.saveSmartFurnitureHookup(smartFurnitureHookup)
@@ -52,7 +54,6 @@ class SmartFurnitureHookupServiceImpl(
                     val zone = getZoneOrFail(zoneID)
 
                     if (isPositionInZone(targetPoint, zone)) {
-                        println("Yes, is in the zone")
                         zoneID
                     } else {
                         findZoneIDOfSmartFurnitureHookup(targetPoint)
@@ -82,7 +83,6 @@ class SmartFurnitureHookupServiceImpl(
     private suspend fun getZoneOrFail(zoneID: ZoneID): Zone = repository.findZoneByID(zoneID) ?: throw ZoneIDNotFoundException(zoneID.value)
 
     private suspend fun findZoneIDOfSmartFurnitureHookup(point: Point): ZoneID? {
-        println("oh no")
         val zones = repository.findAllZones()
 
         for (zone in zones) {
