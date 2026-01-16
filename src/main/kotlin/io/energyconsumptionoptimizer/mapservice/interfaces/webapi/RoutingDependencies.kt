@@ -11,6 +11,7 @@ import io.ktor.client.HttpClient
 class RoutingDependencies(
     mongoFloorPlanRepository: HouseMapRepository,
     httpClient: HttpClient,
+    userServiceUrl: String,
 ) {
     val floorPlanServiceImpl by lazy { FloorPlanServiceImpl(mongoFloorPlanRepository) }
     val zoneServiceImpl by lazy { ZoneServiceImpl(mongoFloorPlanRepository) }
@@ -23,5 +24,5 @@ class RoutingDependencies(
         )
     }
 
-    val authMiddleware by lazy { AuthMiddleware(httpClient) }
+    val authMiddleware by lazy { AuthMiddleware(httpClient, userServiceUrl) }
 }

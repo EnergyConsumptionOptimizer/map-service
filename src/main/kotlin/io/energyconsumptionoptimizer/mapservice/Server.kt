@@ -5,7 +5,6 @@ import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.server.netty.NettyApplicationEngine
 import kotlin.system.exitProcess
-import kotlin.text.toIntOrNull
 
 private val PORT = System.getenv("PORT")?.toIntOrNull() ?: 3000
 private const val SHUTDOWN_GRACE_PERIOD_MS = 1000L
@@ -32,9 +31,13 @@ private fun loadConfiguration(): AppConfig {
     val mongoDbName = System.getenv("MONGO_DB") ?: "mapservice"
     val mongoUri = "mongodb://$mongoHost:$mongoPort"
 
+    val userHost = System.getenv("USER_SERVICE_HOST") ?: "user-service"
+    val userPort = System.getenv("USER_SERVICE_PORT") ?: "3000"
+
     return AppConfig(
         mongoUri = mongoUri,
         mongoDatabase = mongoDbName,
+        userServiceUrl = System.getenv("USER_SERVICE_URL") ?: "http://$userHost:$userPort",
     )
 }
 

@@ -13,10 +13,8 @@ import kotlinx.io.IOException
 
 class AuthMiddleware(
     private val httpClient: HttpClient,
+    private val userServiceUrl: String,
 ) {
-    val userServiceUri =
-        System.getenv("USER_SERVICE_URI") ?: "http://localhost:3000"
-
     private fun getAuthTokenFromCookies(call: ApplicationCall): String {
         val token = call.request.cookies["authToken"] ?: throw InvalidTokenException()
 
@@ -33,7 +31,7 @@ class AuthMiddleware(
 
         try {
             val response =
-                httpClient.get("$userServiceUri$endpoint") {
+                httpClient.get("$userServiceUrl$endpoint") {
                     header("Cookie", "authToken=$token")
                 }
 

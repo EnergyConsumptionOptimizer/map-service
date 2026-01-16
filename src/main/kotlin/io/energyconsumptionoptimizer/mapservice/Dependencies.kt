@@ -15,6 +15,7 @@ import org.litote.kmongo.reactivestreams.KMongo
 data class AppConfig(
     val mongoUri: String,
     val mongoDatabase: String,
+    val userServiceUrl: String,
 )
 
 class Dependencies(
@@ -46,7 +47,7 @@ class Dependencies(
         )
     }
 
-    val routeDependencies by lazy { RoutingDependencies(mongoFloorPlanRepository, httpClient) }
+    val routeDependencies by lazy { RoutingDependencies(mongoFloorPlanRepository, httpClient, config.userServiceUrl) }
 
     fun shutdown() {
         httpClient.close()
