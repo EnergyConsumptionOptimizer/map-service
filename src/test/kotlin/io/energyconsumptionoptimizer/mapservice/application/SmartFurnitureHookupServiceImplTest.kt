@@ -50,7 +50,7 @@ class SmartFurnitureHookupServiceImplTest :
 
             context("createSmartFurnitureHookup") {
                 should("create hookup without zone assignment") {
-                    val smartFurnitureHookup = craftSmartFurnitureHookup()
+                    val smartFurnitureHookup = craftSmartFurnitureHookup(zoneID = null)
 
                     val id = smartFurnitureHookup.id
                     val position = smartFurnitureHookup.position
@@ -64,6 +64,8 @@ class SmartFurnitureHookupServiceImplTest :
                         )
 
                     coEvery { repository.saveSmartFurnitureHookup(any()) } returns savedHookup
+                    coEvery { repository.saveSmartFurnitureHookup(any()) } returns savedHookup
+                    coEvery { repository.findAllZones() } returns emptyList()
 
                     val result = hookupService.createSmartFurnitureHookup(id, position.let { it.x to it.y }, null)
 
