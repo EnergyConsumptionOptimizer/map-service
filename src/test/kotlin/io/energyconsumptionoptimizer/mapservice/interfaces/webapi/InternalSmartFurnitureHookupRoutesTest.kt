@@ -17,6 +17,7 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 
+// CPD-OFF
 class InternalSmartFurnitureHookupRoutesTest :
     ShouldSpec({
         lateinit var hookupService: SmartFurnitureHookupServiceImpl
@@ -34,7 +35,7 @@ class InternalSmartFurnitureHookupRoutesTest :
             every { routingDependencies.houseMapServiceImpl } returns mockk(relaxed = true)
             every { routingDependencies.zoneServiceImpl } returns mockk(relaxed = true)
         }
-
+        // CPD-ON
         afterEach {
             clearAllMocks()
         }
