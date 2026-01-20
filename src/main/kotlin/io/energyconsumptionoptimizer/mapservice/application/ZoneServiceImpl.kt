@@ -1,5 +1,6 @@
 package io.energyconsumptionoptimizer.mapservice.application
 
+import io.energyconsumptionoptimizer.mapservice.application.port.MonitoringService
 import io.energyconsumptionoptimizer.mapservice.domain.Color
 import io.energyconsumptionoptimizer.mapservice.domain.Point
 import io.energyconsumptionoptimizer.mapservice.domain.SmartFurnitureHookup
@@ -14,6 +15,7 @@ import io.energyconsumptionoptimizer.mapservice.domain.utils.isPointInPolygon
 
 class ZoneServiceImpl(
     private val repository: HouseMapRepository,
+    private val monitoringService: MonitoringService,
 ) : ZoneService {
     override suspend fun createZone(
         name: String,
@@ -62,6 +64,8 @@ class ZoneServiceImpl(
         repository.removeZone(id)
 
         removeAssignedHookupsToZone(id)
+
+        monitoringService.removeZoneIDFromMeasurements(id)
     }
 
     private suspend fun updateSmartFurnitureHookupZoneID(

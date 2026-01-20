@@ -4,17 +4,19 @@ import io.energyconsumptionoptimizer.mapservice.application.FloorPlanServiceImpl
 import io.energyconsumptionoptimizer.mapservice.application.HouseMapServiceImpl
 import io.energyconsumptionoptimizer.mapservice.application.SmartFurnitureHookupServiceImpl
 import io.energyconsumptionoptimizer.mapservice.application.ZoneServiceImpl
+import io.energyconsumptionoptimizer.mapservice.application.port.MonitoringService
 import io.energyconsumptionoptimizer.mapservice.domain.ports.HouseMapRepository
 import io.energyconsumptionoptimizer.mapservice.interfaces.webapi.middleware.AuthMiddleware
 import io.ktor.client.HttpClient
 
 class RoutingDependencies(
     mongoFloorPlanRepository: HouseMapRepository,
+    monitoringService: MonitoringService,
     httpClient: HttpClient,
     userServiceUrl: String,
 ) {
     val floorPlanServiceImpl by lazy { FloorPlanServiceImpl(mongoFloorPlanRepository) }
-    val zoneServiceImpl by lazy { ZoneServiceImpl(mongoFloorPlanRepository) }
+    val zoneServiceImpl by lazy { ZoneServiceImpl(mongoFloorPlanRepository, monitoringService) }
     val smartFurnitureHookupServiceImpl by lazy { SmartFurnitureHookupServiceImpl(mongoFloorPlanRepository) }
     val houseMapServiceImpl by lazy {
         HouseMapServiceImpl(
