@@ -1,6 +1,7 @@
 package io.energyconsumptionoptimizer.mapservice
 
 import io.energyconsumptionoptimizer.mapservice.domain.ports.HouseMapRepository
+import io.energyconsumptionoptimizer.mapservice.interfaces.MonitoringServiceImpl
 import io.energyconsumptionoptimizer.mapservice.interfaces.webapi.RoutingDependencies
 import io.energyconsumptionoptimizer.mapservice.storage.mongodb.MongoHouseMapRepository
 import io.ktor.client.HttpClient
@@ -16,6 +17,7 @@ data class AppConfig(
     val mongoUri: String,
     val mongoDatabase: String,
     val userServiceUrl: String,
+    val monitoringServiceUrl: String,
 )
 
 class Dependencies(
@@ -47,7 +49,21 @@ class Dependencies(
         )
     }
 
-    val routeDependencies by lazy { RoutingDependencies(mongoFloorPlanRepository, httpClient, config.userServiceUrl) }
+    val monitoringServiceImpl: MonitoringServiceImpl by lazy {
+        MonitoringServiceImpl(
+            httpClient,
+            config.monitoringServiceUrl,
+        )
+    }
+
+    val routeDependencies by lazy {
+        RoutingDependencies(
+            mongoFloorPlanRepository,
+            monitoringServiceImpl,
+            httpClient,
+            config.userServiceUrl,
+        )
+    }
 
     fun shutdown() {
         httpClient.close()
