@@ -63,7 +63,6 @@ class MongoHouseMapRepository(
     }
 
     override suspend fun saveZone(zone: Zone): Zone {
-        println("Zone $zone")
         val document = ZoneMapper.toDocument(zone).copy(_id = UUID.randomUUID().toString())
 
         try {

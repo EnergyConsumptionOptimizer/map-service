@@ -97,9 +97,5 @@ class SmartFurnitureHookupServiceImpl(
     private fun isPositionInZone(
         position: Point,
         zone: Zone,
-    ): Boolean {
-        println(zone.vertices)
-        println(position)
-        return isPointInPolygon(position, zone.vertices)
-    }
+    ): Boolean = isPointInPolygon(position, zone.vertices)
 }
