@@ -9,6 +9,7 @@ import io.energyconsumptionoptimizer.mapservice.domain.ZoneID
 import io.energyconsumptionoptimizer.mapservice.domain.ZoneName
 import io.energyconsumptionoptimizer.mapservice.domain.errors.ZoneIDNotFoundException
 import io.energyconsumptionoptimizer.mapservice.domain.ports.HouseMapRepository
+import io.energyconsumptionoptimizer.mapservice.interfaces.MonitoringServiceImpl
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.collections.shouldContain
@@ -51,10 +52,12 @@ class ZoneServiceImplTest :
     ShouldSpec({
         lateinit var repository: HouseMapRepository
         lateinit var zoneService: ZoneServiceImpl
+        lateinit var monitoringService: MonitoringServiceImpl
 
         beforeEach {
             repository = mockk()
-            zoneService = ZoneServiceImpl(repository)
+            monitoringService = mockk()
+            zoneService = ZoneServiceImpl(repository, monitoringService)
         }
 
         afterEach {
@@ -252,6 +255,7 @@ class ZoneServiceImplTest :
                     )
 
                 coEvery { repository.removeZone(zone.id) } just Runs
+                coEvery { monitoringService.removeZoneIDFromMeasurements(zone.id) } just Runs
                 coEvery { repository.findAllSmartFurnitureHookupsOfZone(zone.id) } returns hookups
                 coEvery { repository.updateSmartFurnitureHookup(any()) } returns hookups[0]
 
