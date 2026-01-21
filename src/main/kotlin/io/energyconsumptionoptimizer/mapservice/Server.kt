@@ -7,6 +7,7 @@ import io.ktor.server.netty.NettyApplicationEngine
 import kotlin.system.exitProcess
 
 private val PORT = System.getenv("PORT")?.toIntOrNull() ?: 3003
+
 private const val SHUTDOWN_GRACE_PERIOD_MS = 1000L
 private const val SHUTDOWN_TIMEOUT_MS = 2000L
 
