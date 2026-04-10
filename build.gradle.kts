@@ -71,8 +71,14 @@ jib {
         image = "eclipse-temurin:21-jre-jammy"
         if (System.getenv("CI") == "true") {
             platforms {
-                platform { architecture = "amd64"; os = "linux" }
-                platform { architecture = "arm64"; os = "linux" }
+                platform {
+                    architecture = "amd64"
+                    os = "linux"
+                }
+                platform {
+                    architecture = "arm64"
+                    os = "linux"
+                }
             }
         }
     }
@@ -85,7 +91,7 @@ jib {
     container {
         mainClass = application.mainClass.get()
         ports = listOf("3000")
-        user = "root" 
+        user = "root"
         environment = mapOf("KTOR_DEVELOPMENT" to "true")
     }
 }

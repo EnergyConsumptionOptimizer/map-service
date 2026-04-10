@@ -2,6 +2,7 @@
 .gradle/
 build/
 */build/
+bin/
 
 # Local configuration files
 local.properties
@@ -48,3 +49,4 @@ ndkBuild/
 
 # Ignore Gradle build output directory
 build
+doc
