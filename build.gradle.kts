@@ -1,5 +1,4 @@
 import io.github.andreabrighi.gradle.gitsemver.conventionalcommit.ConventionalCommit
-import io.gitlab.arturbosch.detekt.Detekt
 
 plugins {
     alias(libs.plugins.gitSemVer)
@@ -96,7 +95,7 @@ jib {
     }
 }
 
-tasks.withType<Detekt>().configureEach {
+detekt {
     config.setFrom(files("$rootDir/detekt.yml"))
     buildUponDefaultConfig = true
 }
