@@ -8,6 +8,7 @@ logback = "1.5.32"
 kmongo = "5.6.0"
 dotenvKotlin= "6.5.1"
 mockkVersion = "1.14.9"
+jib = "3.4.1"
 
 [libraries]
 kotest-junit5-jvm = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
@@ -57,3 +58,4 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-qa = "org.danilopianini.gradle-kotlin-qa:0.101.1"
 
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinxSerialization" }
+jib = { id = "com.google.cloud.tools.jib", version.ref = "jib" }
