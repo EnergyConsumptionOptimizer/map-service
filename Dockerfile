@@ -9,12 +9,12 @@ RUN git init && \
     git config user.name "build" && \
     git commit --allow-empty -m "init" --no-gpg-sign
 
-RUN --mount=type=cache,id=forecast-gradle-cache,target=/home/gradle/.gradle/caches \
+RUN --mount=type=cache,id=map-gradle-cache,target=/home/gradle/.gradle/caches \
     gradle dependencies --no-daemon --quiet
 
 COPY src/ ./src/
 
-RUN --mount=type=cache,id=forecast-gradle-cache,target=/home/gradle/.gradle/caches \
+RUN --mount=type=cache,id=map-gradle-cache,target=/home/gradle/.gradle/caches \
     gradle jar --no-daemon --parallel -x test -x check
 
 FROM eclipse-temurin:26-jre-jammy AS runtime
