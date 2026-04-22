@@ -1,4 +1,4 @@
-package io.energyconsumptionoptimizer.mapservice.application.port
+package io.energyconsumptionoptimizer.mapservice.application.outbound
 
 import io.energyconsumptionoptimizer.mapservice.domain.ZoneID
 

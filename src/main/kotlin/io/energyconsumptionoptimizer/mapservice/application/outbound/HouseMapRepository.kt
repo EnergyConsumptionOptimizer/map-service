@@ -1,4 +1,4 @@
-package io.energyconsumptionoptimizer.mapservice.domain.ports
+package io.energyconsumptionoptimizer.mapservice.application.outbound
 
 import io.energyconsumptionoptimizer.mapservice.domain.FloorPlan
 import io.energyconsumptionoptimizer.mapservice.domain.SmartFurnitureHookup
@@ -28,7 +28,7 @@ interface HouseMapRepository {
      * @param zone The zone entity to save
      * @return The saved zone
      *
-     * @throws io.energyconsumptionoptimizer.mapservice.domain.errors.ZoneNameAlreadyExistsException
+     * @throws io.energyconsumptionoptimizer.mapservice.domain.ZoneNameAlreadyExistsException
      */
     suspend fun saveZone(zone: Zone): Zone
 
@@ -38,7 +38,7 @@ interface HouseMapRepository {
      * @param smartFurnitureHookup The smart furniture hookup entity to save
      * @return The saved smart furniture hookup
      *
-     *  @throws io.energyconsumptionoptimizer.mapservice.domain.errors.SmartFurnitureHookupAlreadyExistsException
+     *  @throws io.energyconsumptionoptimizer.mapservice.domain.SmartFurnitureHookupAlreadyExistsException
      */
     suspend fun saveSmartFurnitureHookup(smartFurnitureHookup: SmartFurnitureHookup): SmartFurnitureHookup
 
@@ -48,8 +48,8 @@ interface HouseMapRepository {
      * @param zone The zone entity with updated values
      * @return The updated zone
      *
-     * @throws io.energyconsumptionoptimizer.mapservice.domain.errors.ZoneIDNotFoundException
-     * @throws io.energyconsumptionoptimizer.mapservice.domain.errors.ZoneNameAlreadyExistsException
+     * @throws io.energyconsumptionoptimizer.mapservice.domain.ZoneIDNotFoundException
+     * @throws io.energyconsumptionoptimizer.mapservice.domain.ZoneNameAlreadyExistsException
      */
     suspend fun updateZone(zone: Zone): Zone
 
@@ -59,7 +59,7 @@ interface HouseMapRepository {
      * @param smartFurnitureHookup The smart furniture hookup entity with updated values
      * @return The updated smart furniture hookup
      *
-     * @throws io.energyconsumptionoptimizer.mapservice.domain.errors.SmartFurnitureHookupIDNotFoundException
+     * @throws io.energyconsumptionoptimizer.mapservice.domain.SmartFurnitureHookupIDNotFoundException
      */
     suspend fun updateSmartFurnitureHookup(smartFurnitureHookup: SmartFurnitureHookup): SmartFurnitureHookup
 
@@ -113,7 +113,7 @@ interface HouseMapRepository {
      *
      * @param id The unique identifier of the zone to remove
      *
-     * @throws io.energyconsumptionoptimizer.mapservice.domain.errors.ZoneIDNotFoundException
+     * @throws io.energyconsumptionoptimizer.mapservice.domain.ZoneIDNotFoundException
      */
     suspend fun removeZone(id: ZoneID)
 
@@ -122,7 +122,7 @@ interface HouseMapRepository {
      *
      * @param id The unique identifier of the smart furniture hookup to remove
      *
-     * @throws io.energyconsumptionoptimizer.mapservice.domain.errors.SmartFurnitureHookupIDNotFoundException
+     * @throws io.energyconsumptionoptimizer.mapservice.domain.SmartFurnitureHookupIDNotFoundException
      */
     suspend fun removeSmartFurnitureHookup(id: SmartFurnitureHookupID)
 }
