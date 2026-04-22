@@ -1,17 +1,17 @@
 package io.energyconsumptionoptimizer.mapservice.application
 
-import io.energyconsumptionoptimizer.mapservice.application.port.MonitoringService
+import io.energyconsumptionoptimizer.mapservice.application.inbound.ZoneService
+import io.energyconsumptionoptimizer.mapservice.application.outbound.HouseMapRepository
+import io.energyconsumptionoptimizer.mapservice.application.outbound.MonitoringService
 import io.energyconsumptionoptimizer.mapservice.domain.Color
 import io.energyconsumptionoptimizer.mapservice.domain.Point
 import io.energyconsumptionoptimizer.mapservice.domain.SmartFurnitureHookup
 import io.energyconsumptionoptimizer.mapservice.domain.Zone
 import io.energyconsumptionoptimizer.mapservice.domain.ZoneFactory
 import io.energyconsumptionoptimizer.mapservice.domain.ZoneID
+import io.energyconsumptionoptimizer.mapservice.domain.ZoneIDNotFoundException
 import io.energyconsumptionoptimizer.mapservice.domain.ZoneName
-import io.energyconsumptionoptimizer.mapservice.domain.errors.ZoneIDNotFoundException
-import io.energyconsumptionoptimizer.mapservice.domain.ports.HouseMapRepository
-import io.energyconsumptionoptimizer.mapservice.domain.ports.ZoneService
-import io.energyconsumptionoptimizer.mapservice.domain.utils.isPointInPolygon
+import io.energyconsumptionoptimizer.mapservice.domain.isPointInPolygon
 
 class ZoneServiceImpl(
     private val repository: HouseMapRepository,

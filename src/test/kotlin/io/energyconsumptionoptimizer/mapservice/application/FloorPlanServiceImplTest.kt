@@ -1,8 +1,8 @@
 package io.energyconsumptionoptimizer.mapservice.application
 
+import io.energyconsumptionoptimizer.mapservice.application.outbound.HouseMapRepository
 import io.energyconsumptionoptimizer.mapservice.domain.FloorPlan
-import io.energyconsumptionoptimizer.mapservice.domain.errors.FlorPlanFormatNotValidException
-import io.energyconsumptionoptimizer.mapservice.domain.ports.HouseMapRepository
+import io.energyconsumptionoptimizer.mapservice.domain.FlorPlanFormatNotValidException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe

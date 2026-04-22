@@ -1,12 +1,12 @@
 package io.energyconsumptionoptimizer.mapservice.application
 
+import io.energyconsumptionoptimizer.mapservice.application.inbound.FloorPlanService
+import io.energyconsumptionoptimizer.mapservice.application.inbound.SmartFurnitureHookupService
+import io.energyconsumptionoptimizer.mapservice.application.inbound.ZoneService
 import io.energyconsumptionoptimizer.mapservice.domain.FloorPlan
+import io.energyconsumptionoptimizer.mapservice.domain.FlorPlanNotFoundException
 import io.energyconsumptionoptimizer.mapservice.domain.SmartFurnitureHookupID
 import io.energyconsumptionoptimizer.mapservice.domain.ZoneID
-import io.energyconsumptionoptimizer.mapservice.domain.errors.FlorPlanNotFoundException
-import io.energyconsumptionoptimizer.mapservice.domain.ports.FloorPlanService
-import io.energyconsumptionoptimizer.mapservice.domain.ports.SmartFurnitureHookupService
-import io.energyconsumptionoptimizer.mapservice.domain.ports.ZoneService
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.collections.shouldContainExactly

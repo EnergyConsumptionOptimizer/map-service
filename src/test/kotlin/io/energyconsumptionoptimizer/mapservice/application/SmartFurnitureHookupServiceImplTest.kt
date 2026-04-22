@@ -1,13 +1,13 @@
 package io.energyconsumptionoptimizer.mapservice.application
 
+import io.energyconsumptionoptimizer.mapservice.application.outbound.HouseMapRepository
 import io.energyconsumptionoptimizer.mapservice.domain.Point
 import io.energyconsumptionoptimizer.mapservice.domain.SmartFurnitureHookup
 import io.energyconsumptionoptimizer.mapservice.domain.SmartFurnitureHookupID
+import io.energyconsumptionoptimizer.mapservice.domain.SmartFurnitureHookupIDNotFoundException
 import io.energyconsumptionoptimizer.mapservice.domain.Zone
 import io.energyconsumptionoptimizer.mapservice.domain.ZoneID
-import io.energyconsumptionoptimizer.mapservice.domain.errors.SmartFurnitureHookupIDNotFoundException
-import io.energyconsumptionoptimizer.mapservice.domain.errors.ZoneIDNotFoundException
-import io.energyconsumptionoptimizer.mapservice.domain.ports.HouseMapRepository
+import io.energyconsumptionoptimizer.mapservice.domain.ZoneIDNotFoundException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.collections.shouldContainExactly
