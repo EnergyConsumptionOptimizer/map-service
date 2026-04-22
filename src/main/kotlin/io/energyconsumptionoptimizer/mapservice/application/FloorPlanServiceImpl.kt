@@ -1,9 +1,9 @@
 package io.energyconsumptionoptimizer.mapservice.application
 
+import io.energyconsumptionoptimizer.mapservice.application.inbound.FloorPlanService
+import io.energyconsumptionoptimizer.mapservice.application.outbound.HouseMapRepository
 import io.energyconsumptionoptimizer.mapservice.domain.FloorPlan
-import io.energyconsumptionoptimizer.mapservice.domain.errors.FlorPlanFormatNotValidException
-import io.energyconsumptionoptimizer.mapservice.domain.ports.FloorPlanService
-import io.energyconsumptionoptimizer.mapservice.domain.ports.HouseMapRepository
+import io.energyconsumptionoptimizer.mapservice.domain.FlorPlanFormatNotValidException
 import org.xml.sax.InputSource
 import java.io.StringReader
 import javax.xml.parsers.DocumentBuilderFactory

@@ -1,9 +1,9 @@
 package io.energyconsumptionoptimizer.mapservice
 
-import io.energyconsumptionoptimizer.mapservice.domain.ports.HouseMapRepository
-import io.energyconsumptionoptimizer.mapservice.interfaces.MonitoringServiceImpl
-import io.energyconsumptionoptimizer.mapservice.interfaces.webapi.RoutingDependencies
-import io.energyconsumptionoptimizer.mapservice.storage.mongodb.MongoHouseMapRepository
+import io.energyconsumptionoptimizer.mapservice.application.outbound.HouseMapRepository
+import io.energyconsumptionoptimizer.mapservice.infrastructure.HTTPMonitoringService
+import io.energyconsumptionoptimizer.mapservice.infrastructure.mongodb.MongoHouseMapRepository
+import io.energyconsumptionoptimizer.mapservice.presentation.webapi.RoutingDependencies
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -49,8 +49,8 @@ class Dependencies(
         )
     }
 
-    val monitoringServiceImpl: MonitoringServiceImpl by lazy {
-        MonitoringServiceImpl(
+    val monitoringServiceImpl: HTTPMonitoringService by lazy {
+        HTTPMonitoringService(
             httpClient,
             config.monitoringServiceUrl,
         )

@@ -1,6 +1,5 @@
 package io.energyconsumptionoptimizer.mapservice.domain
 
-import io.energyconsumptionoptimizer.mapservice.domain.utils.isPointInPolygon
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
 

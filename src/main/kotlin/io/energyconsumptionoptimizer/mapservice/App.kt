@@ -1,7 +1,7 @@
 package io.energyconsumptionoptimizer.mapservice
 
-import io.energyconsumptionoptimizer.mapservice.interfaces.webapi.configureRouting
-import io.energyconsumptionoptimizer.mapservice.interfaces.webapi.configureStatusPages
+import io.energyconsumptionoptimizer.mapservice.presentation.webapi.configureRouting
+import io.energyconsumptionoptimizer.mapservice.presentation.webapi.configureStatusPages
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
 import io.ktor.server.application.install

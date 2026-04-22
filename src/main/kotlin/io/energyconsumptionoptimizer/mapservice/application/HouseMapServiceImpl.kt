@@ -1,11 +1,11 @@
 package io.energyconsumptionoptimizer.mapservice.application
 
+import io.energyconsumptionoptimizer.mapservice.application.inbound.FloorPlanService
+import io.energyconsumptionoptimizer.mapservice.application.inbound.HouseMapService
+import io.energyconsumptionoptimizer.mapservice.application.inbound.SmartFurnitureHookupService
+import io.energyconsumptionoptimizer.mapservice.application.inbound.ZoneService
+import io.energyconsumptionoptimizer.mapservice.domain.FlorPlanNotFoundException
 import io.energyconsumptionoptimizer.mapservice.domain.HouseMap
-import io.energyconsumptionoptimizer.mapservice.domain.errors.FlorPlanNotFoundException
-import io.energyconsumptionoptimizer.mapservice.domain.ports.FloorPlanService
-import io.energyconsumptionoptimizer.mapservice.domain.ports.HouseMapService
-import io.energyconsumptionoptimizer.mapservice.domain.ports.SmartFurnitureHookupService
-import io.energyconsumptionoptimizer.mapservice.domain.ports.ZoneService
 
 class HouseMapServiceImpl(
     private val floorPlanService: FloorPlanService,
