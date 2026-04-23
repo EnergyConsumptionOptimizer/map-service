@@ -1,6 +1,6 @@
 [versions]
 kotest = "6.1.11"
-kotlin = "2.3.20"
+kotlin = "2.3.21"
 ktor = "3.4.3"
 kotlinxSerialization = "1.9.0"
 coroutines = "1.10.2"
