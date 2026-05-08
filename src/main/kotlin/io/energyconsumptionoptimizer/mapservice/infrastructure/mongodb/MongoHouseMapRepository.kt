@@ -16,6 +16,7 @@ import io.energyconsumptionoptimizer.mapservice.domain.Zone
 import io.energyconsumptionoptimizer.mapservice.domain.ZoneID
 import io.energyconsumptionoptimizer.mapservice.domain.ZoneIDNotFoundException
 import io.energyconsumptionoptimizer.mapservice.domain.ZoneNameAlreadyExistsException
+import io.energyconsumptionoptimizer.mapservice.infrastructure.Adapter
 import io.energyconsumptionoptimizer.mapservice.infrastructure.mongodb.documents.FloorPlanDocument
 import io.energyconsumptionoptimizer.mapservice.infrastructure.mongodb.documents.SmartFurnitureHookupDocument
 import io.energyconsumptionoptimizer.mapservice.infrastructure.mongodb.documents.ZoneDocument
@@ -29,6 +30,7 @@ import org.litote.kmongo.eq
 import java.util.UUID
 
 @Suppress("Detekt.TooManyFunctions")
+@Adapter
 class MongoHouseMapRepository(
     mongoClient: CoroutineClient,
     databaseName: String = "map-service",

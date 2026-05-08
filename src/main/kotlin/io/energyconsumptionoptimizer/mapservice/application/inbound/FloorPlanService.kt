@@ -6,6 +6,7 @@ import io.energyconsumptionoptimizer.mapservice.domain.FloorPlan
  * Service interface for managing floor plan operations.
  *
  */
+@InBoundPort
 interface FloorPlanService {
     /**
      * Creates a new floor plan from an SVG representation.

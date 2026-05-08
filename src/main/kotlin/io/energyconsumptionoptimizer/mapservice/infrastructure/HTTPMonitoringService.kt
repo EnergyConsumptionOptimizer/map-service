@@ -5,6 +5,7 @@ import io.energyconsumptionoptimizer.mapservice.domain.ZoneID
 import io.ktor.client.HttpClient
 import io.ktor.client.request.delete
 
+@Adapter
 class HTTPMonitoringService(
     private val httpClient: HttpClient,
     private val baseUrl: String,

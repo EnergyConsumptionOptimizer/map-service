@@ -5,6 +5,7 @@ import io.energyconsumptionoptimizer.mapservice.domain.HouseMap
 /**
  * Service interface for retrieving the complete house map.
  */
+@InBoundPort
 interface HouseMapService {
     /**
      * Retrieves the complete house map including floor plan, zones, and smart furniture hookups.
