@@ -47,11 +47,19 @@ export class SmartFurnitureHookup extends Entity {
   }
 
   assignToZone(zoneId: ZoneID): void {
+    if (this.#zoneId === zoneId) {
+      return;
+    }
+
     this.#zoneId = zoneId;
     this.addDomainEvent(new SmartFurnitureHookupZoneChangedEvent(this));
   }
 
   unassignZone(): void {
+    if (this.#zoneId === null) {
+      return;
+    }
+
     this.#zoneId = null;
     this.addDomainEvent(new SmartFurnitureHookupZoneChangedEvent(this));
   }

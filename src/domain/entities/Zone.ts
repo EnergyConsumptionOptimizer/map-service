@@ -3,8 +3,10 @@ import { ZoneName } from "@domain/values/ZoneName";
 import { Color } from "@domain/values/Color";
 import { Polygon } from "@domain/values/Polygon";
 import { Point } from "@domain/values/Point";
+import { Entity } from "@domain/entities/Entity";
+import { ZoneDeletedEvent } from "@domain/events/ZoneDeletedEvent";
 
-export class Zone {
+export class Zone extends Entity {
   #name: ZoneName;
   #color: Color;
   #boundary: Polygon;
@@ -15,6 +17,8 @@ export class Zone {
     color: Color,
     boundary: Polygon,
   ) {
+    super();
+
     this.#name = name;
     this.#color = color;
     this.#boundary = boundary;
@@ -48,6 +52,10 @@ export class Zone {
     boundary: Polygon,
   ): Zone {
     return new Zone(id, name, color, boundary);
+  }
+
+  prepareForDeletion(): void {
+    this.addDomainEvent(new ZoneDeletedEvent(this));
   }
 
   rename(newName: ZoneName): void {
