@@ -16,11 +16,12 @@
     "removeComments": false,
     "baseUrl": "./src",
     "paths": {
-      //"@domain/*": ["./domain/*"],
-      //"@application/*": ["./application/*"],
-      //"@presentation/*": ["./presentation/*"],
-      //"@storage/*": ["./storage/*"],
-      //"@interfaces/*": ["./interfaces/*"],
+      "@domain/*": ["./domain/*"],
+      "@application/*": ["./application/*"],
+      "@presentation/*": ["./presentation/*"],
+      "@infrastructure/*": ["./infrastructure/*"],
+      "@bootstrap/*": ["./bootstrap/*"],
+      "@test/*": ["./test/*"],
     }
   },
   "include": ["src/**/*"],
