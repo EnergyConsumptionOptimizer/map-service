@@ -7,6 +7,7 @@ import {
   validZoneName,
 } from "@test/domainFactories";
 import { Zone } from "@domain/entities/Zone";
+import { ZoneDeletedEvent } from "@domain/events/ZoneDeletedEvent";
 
 describe("Zone Entity", () => {
   describe("create()", () => {
@@ -92,6 +93,23 @@ describe("Zone Entity", () => {
 
       expect(zone.contains(point(5, 5))).toBe(true);
       expect(zone.contains(point(50, 50))).toBe(false);
+    });
+  });
+
+  describe("prepareForDeletion()", () => {
+    it("should emit ZoneDeletedEvent", () => {
+      const zone = Zone.rehydrate(
+        validZoneID("z1"),
+        validZoneName("Z"),
+        validColor(),
+        unitSquare(),
+      );
+
+      zone.prepareForDeletion();
+
+      const events = zone.pullDomainEvents();
+      expect(events).toHaveLength(1);
+      expect(events[0]).toBeInstanceOf(ZoneDeletedEvent);
     });
   });
 });
