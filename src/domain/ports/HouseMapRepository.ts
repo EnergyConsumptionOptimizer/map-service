@@ -103,7 +103,7 @@ export interface HouseMapRepository {
    */
   findSmartFurnitureHookupByID(
     id: SmartFurnitureHookupID,
-  ): Promise<SmartFurnitureHookup | null>;
+  ): Promise<SmartFurnitureHookup | null | Error>;
 
   /**
    * Removes a zone from the repository.
