@@ -33,3 +33,7 @@ export const hookupDeletionsTotal = meter.createCounter(
   "smart_furniture_hookup_deletions_total",
   { description: "Total number of smart furniture hookup deletions" },
 );
+export const mapDlqPublishesTotal = meter.createCounter(
+  "map_dlq_publishes_total",
+  { description: "Total number of messages published to the map DLQ" },
+);
