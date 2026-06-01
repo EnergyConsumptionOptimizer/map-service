@@ -18,9 +18,15 @@ import { AuthMiddleware } from "@presentation/rest/middlewares/AuthMiddleware";
 import { router } from "@presentation/rest/routes/router";
 import { createApp } from "@bootstrap/app";
 import { config } from "@bootstrap/config";
+import { KafkaDlqPublisher } from "@infrastructure/messaging/KafkaDlqPublisher";
+import { KafkaHookupConsumer } from "@presentation/event/KafkaHookupConsumer";
+import { SmartFurnitureHookupMessageHandler } from "@presentation/event/handlers/SmartFurnitureHookupMessageHandler";
+import { MongoInboxRepository } from "@infrastructure/persistance/inbox/mongo/MongoInboxRepository";
 
 export interface ComposedApp {
   readonly app: Express;
+  readonly hookupConsumer: KafkaHookupConsumer;
+  readonly kafkaDlqPublisher: KafkaDlqPublisher;
 }
 
 export async function composeApp(logger: Logger): Promise<ComposedApp> {
@@ -35,6 +41,9 @@ export async function composeApp(logger: Logger): Promise<ComposedApp> {
   const idGenerator = new NodeCryptoIdGenerator();
   const eventPublisher = new MongoOutboxEventPublisher(
     logger.child({ component: "MongoOutboxEventPublisher" }),
+  );
+  const inboxRepository = new MongoInboxRepository(
+    logger.child({ component: "MongoInboxRepository" }),
   );
   const uow = new MongoUnitOfWork(
     logger.child({ component: "MongoUnitOfWork" }),
@@ -79,5 +88,28 @@ export async function composeApp(logger: Logger): Promise<ComposedApp> {
   const mainRouter = router(controllers, authMiddleware);
   const app = createApp(mainRouter, logger);
 
-  return { app };
+  const kafkaDlqPublisher = new KafkaDlqPublisher(
+    config.kafka.brokers,
+    config.kafka.clientId,
+    config.kafka.topics.forecastsDlq,
+    logger.child({ component: "KafkaDlqPublisher" }),
+  );
+
+  const forecastMessageHandler = new SmartFurnitureHookupMessageHandler(
+    smartFurnitureHookupService,
+    inboxRepository,
+    kafkaDlqPublisher,
+    logger.child({ component: "ForecastMessageHandler" }),
+  );
+
+  const hookupConsumer = new KafkaHookupConsumer(
+    config.kafka.brokers,
+    config.kafka.clientId,
+    config.kafka.groupId,
+    config.kafka.topics.hookup,
+    forecastMessageHandler,
+    logger.child({ component: "KafkaHookupConsumer" }),
+  );
+
+  return { app, hookupConsumer, kafkaDlqPublisher };
 }

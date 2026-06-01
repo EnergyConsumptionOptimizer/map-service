@@ -10,6 +10,8 @@ const EnvSchema = z.object({
   KAFKA_CLIENT_ID: z.string().default("map-service"),
   KAFKA_BOOTSTRAP_SERVERS: z.string().default("kafka:9092"),
   KAFKA_GROUP_ID: z.string().default("map-service-group"),
+  KAFKA_TOPIC_HOOKUP: z.string().default("hookup-events"),
+  KAFKA_TOPIC_DLQ: z.string().default("map-dlq"),
   LOG_LEVEL: z
     .enum(["trace", "debug", "info", "warn", "error", "fatal"])
     .default("info"),
@@ -37,6 +39,10 @@ export const config = {
     clientId: env.KAFKA_CLIENT_ID,
     brokers: env.KAFKA_BOOTSTRAP_SERVERS.split(","),
     groupId: env.KAFKA_GROUP_ID,
+    topics: {
+      hookup: env.KAFKA_TOPIC_HOOKUP,
+      forecastsDlq: env.KAFKA_TOPIC_DLQ,
+    },
   },
   hookupServiceUrl: `http://${env.HOOKUP_SERVICE_HOST}:${env.HOOKUP_SERVICE_PORT}`,
   logLevel: env.LOG_LEVEL,
