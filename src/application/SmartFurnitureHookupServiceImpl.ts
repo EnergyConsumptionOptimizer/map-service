@@ -116,26 +116,44 @@ export class SmartFurnitureHookupServiceImpl implements SmartFurnitureHookupServ
     return hookup;
   }
 
-  async #findSmartFurnitureHookupByIDOrCreate(id: string) {
-    const hookup =
-      await this.#smartFurnitureHookupServicePort.getSmartFurnitureHookup(id);
+  async deleteSmartFurnitureHookup(id: string): Promise<undefined | Error> {
+    const hookup = await this.#findSmartFurnitureHookup(id);
 
     if (hookup instanceof Error) return hookup;
 
-    return this.createSmartFurnitureHookup(id);
+    await this.#repository.removeSmartFurnitureHookup(hookup.id);
+
+    this.#metrics.recordSmartFurnitureHookupDeletion();
   }
 
-  async deleteSmartFurnitureHookup(id: string): Promise<undefined | Error> {
+  async #findSmartFurnitureHookup(id: string) {
     const hookupId = SmartFurnitureHookupID.from(id);
     if (hookupId instanceof Error) return hookupId;
-
     const hookup =
       await this.#repository.findSmartFurnitureHookupByID(hookupId);
     if (!hookup) return new SmartFurnitureHookupNotFoundError(id);
+    return hookup;
+  }
 
-    await this.#repository.removeSmartFurnitureHookup(hookupId);
+  async #findSmartFurnitureHookupByIDOrCreate(id: string) {
+    const result = await this.#findSmartFurnitureHookup(id);
 
-    this.#metrics.recordSmartFurnitureHookupDeletion();
+    if (result instanceof SmartFurnitureHookup) return result;
+
+    if (result instanceof SmartFurnitureHookupNotFoundError) {
+      const newHookup =
+        await this.#smartFurnitureHookupServicePort.smartFurnitureHookupExists(
+          id,
+        );
+
+      if (newHookup instanceof Error) return newHookup;
+
+      if (!newHookup) return new SmartFurnitureHookupNotFoundError(id);
+
+      return this.createSmartFurnitureHookup(id);
+    }
+
+    return result;
   }
 
   async #findZoneForPosition(position: Point): Promise<Zone | null> {
