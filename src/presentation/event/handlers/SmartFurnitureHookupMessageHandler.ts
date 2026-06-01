@@ -36,16 +36,6 @@ export class SmartFurnitureHookupMessageHandler {
     const message = await this.#parseOrDiscard(raw);
     if (!message) return;
 
-    const acquired = await this.#inbox.tryAcquire(message.eventId);
-
-    if (!acquired) {
-      this.#logger?.debug(
-        { eventId: message.eventId },
-        "Duplicate eventId, skipping",
-      );
-      return;
-    }
-
     const correlationId = message.correlationId ?? message.eventId;
     const childLogger = this.#logger?.child({ correlationId });
 
@@ -56,6 +46,16 @@ export class SmartFurnitureHookupMessageHandler {
     );
 
     if (!handlerFunction) return;
+
+    const acquired = await this.#inbox.tryAcquire(message.eventId);
+
+    if (!acquired) {
+      this.#logger?.debug(
+        { eventId: message.eventId },
+        "Duplicate eventId, skipping",
+      );
+      return;
+    }
 
     const tracer = trace.getTracer("map-service");
     await tracer.startActiveSpan(
