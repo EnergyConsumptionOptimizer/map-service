@@ -48,10 +48,6 @@ describe("SmartFurnitureHookupServiceImpl", () => {
     );
   });
 
-  // ---------------------------------------------------------------------------
-  // createSmartFurnitureHookup
-  // ---------------------------------------------------------------------------
-
   describe("createSmartFurnitureHookup()", () => {
     it("should create a hookup at (0,0) with UNSET zone, save it, record metrics, and return it", async () => {
       const result = await service.createSmartFurnitureHookup("sfh-1");
@@ -73,10 +69,6 @@ describe("SmartFurnitureHookupServiceImpl", () => {
     });
   });
 
-  // ---------------------------------------------------------------------------
-  // getSmartFurnitureHookups
-  // ---------------------------------------------------------------------------
-
   describe("getSmartFurnitureHookups()", () => {
     it("should return all hookups from the repository", async () => {
       const hookups = [
@@ -97,10 +89,6 @@ describe("SmartFurnitureHookupServiceImpl", () => {
       expect(await service.getSmartFurnitureHookups()).toEqual([]);
     });
   });
-
-  // ---------------------------------------------------------------------------
-  // getSmartFurnitureHookup
-  // ---------------------------------------------------------------------------
 
   describe("getSmartFurnitureHookup()", () => {
     it("should return the hookup when found in the repository", async () => {
@@ -129,21 +117,15 @@ describe("SmartFurnitureHookupServiceImpl", () => {
     });
   });
 
-  // ---------------------------------------------------------------------------
-  // updateSmartFurnitureHookup
-  // ---------------------------------------------------------------------------
-
   describe("updateSmartFurnitureHookup()", () => {
-    // Helper: make the external port confirm the hookup exists
-    function portReturnsHookup(id = "sfh-1") {
-      smartFurnitureHookupServicePort.getSmartFurnitureHookup.mockResolvedValue(
-        aSmartFurnitureHookup({ id }),
+    function portReturnsHookup() {
+      smartFurnitureHookupServicePort.smartFurnitureHookupExists.mockResolvedValue(
+        true,
       );
     }
 
-    // Helper: make the external port return an error (hookup not known externally)
     function portReturnsError() {
-      smartFurnitureHookupServicePort.getSmartFurnitureHookup.mockResolvedValue(
+      smartFurnitureHookupServicePort.smartFurnitureHookupExists.mockResolvedValue(
         new SmartFurnitureHookupNotFoundError("sfh-1"),
       );
     }
@@ -165,7 +147,6 @@ describe("SmartFurnitureHookupServiceImpl", () => {
       const result = await service.updateSmartFurnitureHookup("sfh-1");
 
       expect(result).toBeInstanceOf(SmartFurnitureHookup);
-      // createSmartFurnitureHookup is called internally → save + creation metric
       expect(repository.saveSmartFurnitureHookup).toHaveBeenCalled();
       expect(metrics.recordSmartFurnitureHookupCreation).toHaveBeenCalled();
       expect(uow.executeTransactionally).toHaveBeenCalled();
@@ -186,7 +167,7 @@ describe("SmartFurnitureHookupServiceImpl", () => {
 
     it("should auto-assign to a zone when new position falls inside one", async () => {
       portReturnsHookup();
-      const zone = aZone({ id: "zone-1", boundary: unitSquare() }); // (0,0)-(10,10)
+      const zone = aZone({ id: "zone-1", boundary: unitSquare() });
       repository.findAllZones.mockResolvedValue([zone]);
 
       const result = await service.updateSmartFurnitureHookup("sfh-1", [5, 5]);
@@ -201,7 +182,6 @@ describe("SmartFurnitureHookupServiceImpl", () => {
 
     it("should unassign the hookup when new position falls outside all zones", async () => {
       portReturnsHookup();
-      // hookup starts at (0,0) with UNSET zone; no zones match position (200,200)
       repository.findAllZones.mockResolvedValue([
         aZone({ id: "zone-1", boundary: unitSquare() }),
       ]);
@@ -216,11 +196,9 @@ describe("SmartFurnitureHookupServiceImpl", () => {
 
     it("should assign to the given zoneID when the hookup is inside that zone", async () => {
       portReturnsHookup();
-      // Hookup will be at (0,0) after creation; move to (5,5) then assign
-      const zone = aZone({ id: "zone-1", boundary: unitSquare() }); // (0,0)-(10,10)
+      const zone = aZone({ id: "zone-1", boundary: unitSquare() });
       repository.findZoneByID.mockResolvedValue(zone);
 
-      // Position (5,5) is inside unitSquare → zone.contains = true → direct assign
       const result = await service.updateSmartFurnitureHookup(
         "sfh-1",
         [5, 5],
@@ -234,7 +212,6 @@ describe("SmartFurnitureHookupServiceImpl", () => {
 
     it("should fall back to position-based zone detection when hookup is outside the given zone", async () => {
       portReturnsHookup();
-      // The requested zone covers (100,100)-(110,110); hookup at (0,0) is NOT inside it
       const givenZone = aZone({
         id: "zone-distant",
         boundary: distantSquare(),
@@ -242,18 +219,16 @@ describe("SmartFurnitureHookupServiceImpl", () => {
       const fallbackZone = aZone({
         id: "zone-fallback",
         boundary: unitSquare(),
-      }); // (0,0)-(10,10)
+      });
       repository.findZoneByID.mockResolvedValue(givenZone);
       repository.findAllZones.mockResolvedValue([fallbackZone]);
 
-      // Hookup is created at (0,0); zone-distant does NOT contain (0,0) → falls back to position scan
       const result = await service.updateSmartFurnitureHookup(
         "sfh-1",
         undefined,
         "zone-distant",
       );
 
-      // position is (0,0) which IS inside fallbackZone (unitSquare)
       expect((result as SmartFurnitureHookup).zoneId?.toString()).toBe(
         "zone-fallback",
       );
@@ -279,7 +254,7 @@ describe("SmartFurnitureHookupServiceImpl", () => {
 
       expect(result).toBeInstanceOf(Error);
       expect(
-        smartFurnitureHookupServicePort.getSmartFurnitureHookup,
+        smartFurnitureHookupServicePort.smartFurnitureHookupExists,
       ).not.toHaveBeenCalled();
       expect(metrics.recordSmartFurnitureHookupUpdate).not.toHaveBeenCalled();
     });
@@ -292,14 +267,10 @@ describe("SmartFurnitureHookupServiceImpl", () => {
 
       expect(result).toBeInstanceOf(Error);
       expect(
-        smartFurnitureHookupServicePort.getSmartFurnitureHookup,
+        smartFurnitureHookupServicePort.smartFurnitureHookupExists,
       ).not.toHaveBeenCalled();
     });
   });
-
-  // ---------------------------------------------------------------------------
-  // deleteSmartFurnitureHookup
-  // ---------------------------------------------------------------------------
 
   describe("deleteSmartFurnitureHookup()", () => {
     it("should remove the hookup, record metrics, and return undefined", async () => {
