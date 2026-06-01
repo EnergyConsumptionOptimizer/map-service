@@ -20,6 +20,7 @@ import { mongoSessionContext } from "@infrastructure/mongo/mongoSessionContext";
 import {
   ZoneNotFoundError,
   SmartFurnitureHookupNotFoundError,
+  ZoneNameAlreadyExistsError,
 } from "@domain/errors";
 import {
   aZone,
@@ -89,6 +90,7 @@ function mockExec(mockFn: ReturnType<typeof vi.fn>, returnValue: unknown) {
 function makeDuplicateKeyError(): MongoServerError {
   const error = new MongoServerError({ message: "duplicate key" });
   error.code = 11000;
+  error.keyPattern = { name: 1 };
   return error;
 }
 
@@ -187,7 +189,7 @@ describe("MongooseHouseMapRepository", () => {
       expect(result).toBe(zone);
     });
 
-    it("should rethrow a duplicate-key error from Mongo", async () => {
+    it("should throw ZoneNameAlreadyExistsError on duplicate name", async () => {
       const zone = aZone();
       vi.mocked(ZoneMapper.toPersistence).mockReturnValue(aZoneDoc());
       const saveMock = vi.fn().mockRejectedValue(makeDuplicateKeyError());
@@ -197,9 +199,9 @@ describe("MongooseHouseMapRepository", () => {
         } as never,
       );
 
-      await expect(repository.saveZone(zone)).rejects.toMatchObject({
-        code: 11000,
-      });
+      await expect(repository.saveZone(zone)).rejects.toBeInstanceOf(
+        ZoneNameAlreadyExistsError,
+      );
     });
 
     it("should rethrow unexpected database errors", async () => {
@@ -255,9 +257,9 @@ describe("MongooseHouseMapRepository", () => {
         exec: vi.fn().mockRejectedValue(makeDuplicateKeyError()),
       } as never);
 
-      await expect(repository.updateZone(zone)).rejects.toMatchObject({
-        code: 11000,
-      });
+      await expect(repository.updateZone(zone)).rejects.toThrow(
+        ZoneNameAlreadyExistsError,
+      );
     });
   });
 
