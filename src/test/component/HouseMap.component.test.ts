@@ -185,14 +185,11 @@ describe("House Map Component", () => {
       });
 
       it("Given invalid color, When admin creates, Then returns 400", async () => {
-        const res = await request(ctx.app)
-          .post("/api/zones")
-          .set(ADMIN)
-          .send({
-            name: "Bad Zone",
-            color: "not-a-hex",
-            vertices: UNIT_SQUARE_VERTICES,
-          });
+        const res = await request(ctx.app).post("/api/zones").set(ADMIN).send({
+          name: "Bad Zone",
+          color: "not-a-hex",
+          vertices: UNIT_SQUARE_VERTICES,
+        });
 
         expect(res.status).toBe(StatusCodes.BAD_REQUEST);
         expect(res.body.code).toBe("INVALID_COLOR");
@@ -228,13 +225,11 @@ describe("House Map Component", () => {
       });
 
       it("Given no auth headers, When creates, Then returns 401", async () => {
-        const res = await request(ctx.app)
-          .post("/api/zones")
-          .send({
-            name: "Zone",
-            color: "#FF8800",
-            vertices: UNIT_SQUARE_VERTICES,
-          });
+        const res = await request(ctx.app).post("/api/zones").send({
+          name: "Zone",
+          color: "#FF8800",
+          vertices: UNIT_SQUARE_VERTICES,
+        });
 
         expect(res.status).toBe(StatusCodes.UNAUTHORIZED);
       });
