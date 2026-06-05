@@ -17,11 +17,11 @@ export class HTTPSmartFurnitureHookupServicePort implements SmartFurnitureHookup
     const url = `${this.baseUrl}/api/internal/smart-furniture-hookups/${id}`;
 
     try {
-      const response = getSmartFurnitureHookupResponse.safeParse(
-        await axios.get(url),
-      );
+      const { data } = await axios.get(url);
 
-      return response.success;
+      const parsed = getSmartFurnitureHookupResponse.safeParse(data);
+
+      return parsed.success;
     } catch (error) {
       this.#logger?.error(
         { error, smartFurnitureHookupId: id },

@@ -15,7 +15,7 @@ describe("HTTPSmartFurnitureHookupServicePort", () => {
 
   describe("smartFurnitureHookupExists()", () => {
     it("should call the internal endpoint with the correct URL", async () => {
-      vi.mocked(axios.get).mockResolvedValue({ id: "sfh-1" });
+      vi.mocked(axios.get).mockResolvedValue({ data: { id: "sfh-1" } });
 
       await service.smartFurnitureHookupExists("sfh-1");
 
@@ -25,7 +25,7 @@ describe("HTTPSmartFurnitureHookupServicePort", () => {
     });
 
     it("should return true when the response matches the expected schema", async () => {
-      vi.mocked(axios.get).mockResolvedValue({ id: "sfh-1" });
+      vi.mocked(axios.get).mockResolvedValue({ data: { id: "sfh-1" } });
 
       const result = await service.smartFurnitureHookupExists("sfh-1");
 
@@ -33,7 +33,7 @@ describe("HTTPSmartFurnitureHookupServicePort", () => {
     });
 
     it("should return false when the response does not match the schema", async () => {
-      vi.mocked(axios.get).mockResolvedValue({ status: 200, data: {} });
+      vi.mocked(axios.get).mockResolvedValue({ data: { status: 200 } });
 
       const result = await service.smartFurnitureHookupExists("sfh-1");
 
@@ -41,7 +41,7 @@ describe("HTTPSmartFurnitureHookupServicePort", () => {
     });
 
     it("should return false for an empty response", async () => {
-      vi.mocked(axios.get).mockResolvedValue({});
+      vi.mocked(axios.get).mockResolvedValue({ data: {} });
 
       const result = await service.smartFurnitureHookupExists("sfh-1");
 
