@@ -51,15 +51,4 @@ export class SmartFurnitureHookupController {
       .status(StatusCodes.OK)
       .json(smartFurnitureHookupDTOMapper.toDTO(result));
   }
-
-  async deleteSmartFurnitureHookup(req: Request, res: Response): Promise<void> {
-    const result =
-      await this.#smartFurnitureHookupService.deleteSmartFurnitureHookup(
-        req.params.id as string,
-      );
-
-    if (result instanceof Error) throw result;
-
-    res.sendStatus(StatusCodes.NO_CONTENT);
-  }
 }

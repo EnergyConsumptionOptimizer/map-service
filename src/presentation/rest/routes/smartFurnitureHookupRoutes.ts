@@ -32,12 +32,6 @@ export function smartFurnitureHookupRoutes(
       validate(UpdateSmartFurnitureHookupSchema),
       (req, res) =>
         smartFurnitureHookupController.updateSmartFurnitureHookup(req, res),
-    )
-    .delete(
-      authMiddleware.requireRole(UserRoles.ADMIN),
-      validate(SmartFurnitureHookupIdParamSchema),
-      (req, res) =>
-        smartFurnitureHookupController.deleteSmartFurnitureHookup(req, res),
     );
 
   return router;
