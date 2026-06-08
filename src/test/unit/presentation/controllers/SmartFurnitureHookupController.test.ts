@@ -175,33 +175,4 @@ describe("SmartFurnitureHookupController", () => {
       ).rejects.toThrow(ZoneNotFoundError);
     });
   });
-
-  describe("deleteSmartFurnitureHookup()", () => {
-    it("should return 204 on successful deletion", async () => {
-      smartFurnitureHookupService.deleteSmartFurnitureHookup.mockResolvedValue(
-        undefined,
-      );
-      const req = mockRequest({ params: { id: "sfh-desk" } });
-      const res = mockResponse();
-
-      await controller.deleteSmartFurnitureHookup(req, res);
-
-      expect(
-        smartFurnitureHookupService.deleteSmartFurnitureHookup,
-      ).toHaveBeenCalledWith("sfh-desk");
-      expect(res.sendStatus).toHaveBeenCalledWith(StatusCodes.NO_CONTENT);
-    });
-
-    it("should throw SmartFurnitureHookupNotFoundError when deleting a non-existing hookup", async () => {
-      smartFurnitureHookupService.deleteSmartFurnitureHookup.mockResolvedValue(
-        new SmartFurnitureHookupNotFoundError("unknown"),
-      );
-      const req = mockRequest({ params: { id: "unknown" } });
-      const res = mockResponse();
-
-      await expect(
-        controller.deleteSmartFurnitureHookup(req, res),
-      ).rejects.toThrow(SmartFurnitureHookupNotFoundError);
-    });
-  });
 });

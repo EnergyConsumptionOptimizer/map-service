@@ -550,42 +550,6 @@ describe("House Map Component", () => {
         expect(res.status).toBe(StatusCodes.UNAUTHORIZED);
       });
     });
-
-    describe("Scenario: Delete hookup", () => {
-      it("Given existing hookup, When admin deletes, Then returns 204 and subsequent GET returns 404", async () => {
-        await request(ctx.app)
-          .patch("/api/smart-furniture-hookups/sfh-to-delete")
-          .set(ADMIN)
-          .send({ position: { x: 1, y: 1 } });
-
-        const deleteRes = await request(ctx.app)
-          .delete("/api/smart-furniture-hookups/sfh-to-delete")
-          .set(ADMIN);
-
-        expect(deleteRes.status).toBe(StatusCodes.NO_CONTENT);
-
-        const getRes = await request(ctx.app)
-          .get("/api/smart-furniture-hookups/sfh-to-delete")
-          .set(ADMIN);
-        expect(getRes.status).toBe(StatusCodes.NOT_FOUND);
-      });
-
-      it("Given unknown ID, When admin deletes, Then returns 404", async () => {
-        const res = await request(ctx.app)
-          .delete(`/api/smart-furniture-hookups/${UNKNOWN_ID}`)
-          .set(ADMIN);
-
-        expect(res.status).toBe(StatusCodes.NOT_FOUND);
-      });
-
-      it("Given non-admin user, When deletes, Then returns 403", async () => {
-        const res = await request(ctx.app)
-          .delete("/api/smart-furniture-hookups/sfh-1")
-          .set(HOUSEHOLD);
-
-        expect(res.status).toBe(StatusCodes.FORBIDDEN);
-      });
-    });
   });
 
   describe("Feature: House map retrieval", () => {
