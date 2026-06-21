@@ -47,7 +47,7 @@ bin/
 
 # TypeScript build output
 dist/
-*.js
+
 *.js.map
 *.d.ts
 
